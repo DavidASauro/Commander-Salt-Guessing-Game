@@ -8,5 +8,5 @@ To demo the game run the game locally through `npm run dev`.
 ## Some Screeshots
 
 ## Technologies Used
--Frontend: HTML, CSS, TypeScript, React and NextJs
--Styling: CSS, TailwindCSS
+- Frontend: HTML, CSS, TypeScript, React and NextJs.
+- Styling: CSS, TailwindCSS.

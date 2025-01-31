@@ -1,4 +1,4 @@
-# Web Game Name
+# Commander Salt Guessing Game
 ## Description
 A small web game where the goal is to guess if the Magic the Gathering card has a higher salt score than the one to the left (keep guessing right to get a high score).
 

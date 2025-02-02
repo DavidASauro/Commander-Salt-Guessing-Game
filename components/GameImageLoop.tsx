@@ -8,6 +8,7 @@ interface Image {
 }
 
 const ImageFetcher = () => {
+  const [highScore, setHighScore] = useState<number>(0);
   const [images, setImages] = useState<Image[]>([]);
   const [loading, setLoading] = useState(true);
   const [canSwapImageHigher, setCanSwapImageHigher] = useState(false);
@@ -23,11 +24,9 @@ const ImageFetcher = () => {
     if (salt2 > salt1) {
       setCanSwapImageLower(false);
       setCanSwapImageHigher(true);
-      console.log("SALT2 > SALT1");
     } else {
       setCanSwapImageHigher(false);
       setCanSwapImageLower(true);
-      console.log("SALT1 > SALT2");
     }
   };
 
@@ -98,20 +97,20 @@ const ImageFetcher = () => {
 
   const handleButtonClickHigher = () => {
     if (canSwapImageHigher) {
-      console.log("TRUE HIGHER");
+      setHighScore(highScore + 1);
       fetchNewImage();
     } else {
-      console.log("FALSE HIGHER");
+      setHighScore(0);
       fetchInitialImages();
     }
   };
 
   const handleButtonClickLower = () => {
     if (canSwapImageLower) {
-      console.log("TRUE LOWER");
+      setHighScore(highScore + 1);
       fetchNewImage();
     } else {
-      console.log("FALSE LOWER");
+      setHighScore(0);
       fetchInitialImages();
     }
   };
@@ -151,7 +150,7 @@ const ImageFetcher = () => {
         <button onClick={handleButtonClickHigher}>Higher</button>
         <button onClick={handleButtonClickLower}>Lower</button>
       </div>
-      <div className="scoreBoard flex-col">Current Score</div>
+      <div className="scoreBoard flex-col">Current Score: {highScore}</div>
     </div>
   );
 };

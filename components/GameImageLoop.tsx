@@ -7,6 +7,21 @@ interface Image {
   saltLevel: string;
 }
 
+const resetImageCache = async () => {
+  try {
+    const response = await fetch("/api/reset-cache", { method: "POST" });
+    const data = await response.json();
+
+    if (response.ok) {
+      console.log(data.message);
+    } else {
+      console.log(data.message);
+    }
+  } catch (err) {
+    console.error("Error resetting cache:", err);
+  }
+};
+
 const ImageFetcher = () => {
   const [highScore, setHighScore] = useState<number>(0);
   const [images, setImages] = useState<Image[]>([]);
@@ -17,9 +32,6 @@ const ImageFetcher = () => {
   const checkWhichIsTrue = (images: Image[]) => {
     const salt1 = Number(images[0].saltLevel);
     const salt2 = Number(images[1].saltLevel);
-
-    console.log(`Image 1: ${images[0].name} - Salt: ${salt1}`);
-    console.log(`Image 2: ${images[1].name} - Salt: ${salt2}`);
 
     if (salt2 > salt1) {
       setCanSwapImageLower(false);
@@ -101,6 +113,7 @@ const ImageFetcher = () => {
       fetchNewImage();
     } else {
       setHighScore(0);
+      resetImageCache();
       fetchInitialImages();
     }
   };
@@ -111,12 +124,13 @@ const ImageFetcher = () => {
       fetchNewImage();
     } else {
       setHighScore(0);
+      resetImageCache();
       fetchInitialImages();
     }
   };
 
   return (
-    <div className="game-container bg-gray-800 flex-col justify-center items-center h-screen">
+    <div className="game-container bg-gray-800 flex justify-center items-center h-screen">
       <div className="bg-gray-800 cards-container flex justify-center items-center h-screen">
         <div className="leftCard">
           <Image
@@ -125,32 +139,43 @@ const ImageFetcher = () => {
             width={500}
             height={500}
           ></Image>
-          <p>{images[0].saltLevel}</p>
+          <p className="text-cyan-50 flex justify-center font-bold text-2xl font-sans">
+            Salt Score: {images[0].saltLevel}
+          </p>
         </div>
         <div className="vs-logo">
           <Image
-            src="/combat.png"
-            alt="SOMETHING"
-            width={150}
-            height={150}
+            src={"/vs.png"}
+            alt="Versus Image"
+            width={200}
+            height={200}
           ></Image>
         </div>
-        <div className="rightCard ">
+        <div className="rightCard flex mb-6 ">
           <Image
             src={images[1].imageUrl}
             alt={images[1].name}
             width={500}
             height={500}
           ></Image>
-          <p>{images[1].saltLevel}</p>
         </div>
-        <div className="nextCard"></div>
+        <div className="scoreBoard">
+          <div className="buttons-container flex flex-col">
+            <button
+              className=" bg-green-500 hover:bg-blue-400 text-white font-bold py-2 px-4 border-b-4 border-blue-700 hover:border-blue-500 rounded"
+              onClick={handleButtonClickHigher}
+            >
+              Higher
+            </button>
+            <button
+              className="bg-red-500 hover:bg-blue-400 text-white font-bold py-2 px-4 border-b-4 border-blue-700 hover:border-blue-500 rounded"
+              onClick={handleButtonClickLower}
+            >
+              Lower
+            </button>
+          </div>
+        </div>
       </div>
-      <div className="bg-white buttons-container flex justify-center items-center">
-        <button onClick={handleButtonClickHigher}>Higher</button>
-        <button onClick={handleButtonClickLower}>Lower</button>
-      </div>
-      <div className="scoreBoard flex-col">Current Score: {highScore}</div>
     </div>
   );
 };

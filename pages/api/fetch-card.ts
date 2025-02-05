@@ -1,4 +1,4 @@
-import {promises as fs } from "fs";
+
 import { NextApiRequest, NextApiResponse } from "next";
 interface Cache{
     [key: string]: string;
@@ -8,8 +8,8 @@ export default async function handler(req : NextApiRequest, res: NextApiResponse
    
     if(req.method === "GET"){
         try{
-            const file = await fs.readFile(process.cwd() + "/public/results.json", "utf8");
-            const data = JSON.parse(file);
+            const resultsResponse = await fetch('/results.json');
+            const data = await resultsResponse.json()
             const keys = Object.keys(data);
     
             let randomKey = keys[Math.floor(Math.random() * keys.length)];

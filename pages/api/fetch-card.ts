@@ -8,7 +8,7 @@ export default async function handler(req : NextApiRequest, res: NextApiResponse
    
     if(req.method === "GET"){
         try{
-            const file = await fs.readFile(process.cwd() + "/app/data/results.json", "utf8");
+            const file = await fs.readFile(process.cwd() + "/public/results.json", "utf8");
             const data = JSON.parse(file);
             const keys = Object.keys(data);
     

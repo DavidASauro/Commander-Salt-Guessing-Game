@@ -23,6 +23,7 @@ const resetImageCache = async () => {
 };
 
 const ImageFetcher = () => {
+  const [currentScore, setCurrentScore] = useState<number>(0);
   const [highScore, setHighScore] = useState<number>(0);
   const [images, setImages] = useState<Image[]>([]);
   const [loading, setLoading] = useState(true);
@@ -109,10 +110,11 @@ const ImageFetcher = () => {
 
   const handleButtonClickHigher = () => {
     if (canSwapImageHigher) {
-      setHighScore(highScore + 1);
+      setCurrentScore(currentScore + 1);
       fetchNewImage();
     } else {
-      setHighScore(0);
+      setHighScore(Math.max(currentScore, highScore));
+      setCurrentScore(0);
       resetImageCache();
       fetchInitialImages();
     }
@@ -120,19 +122,28 @@ const ImageFetcher = () => {
 
   const handleButtonClickLower = () => {
     if (canSwapImageLower) {
-      setHighScore(highScore + 1);
+      setCurrentScore(currentScore + 1);
       fetchNewImage();
     } else {
-      setHighScore(0);
+      setHighScore(Math.max(currentScore, highScore));
+      setCurrentScore(0);
       resetImageCache();
       fetchInitialImages();
     }
   };
 
   return (
-    <div className="game-container bg-gray-800 flex justify-center items-center h-screen">
+    <div className="game-container bg-gray-800">
+      <div className="HighScore flex justify-center flex-col items-center  ">
+        <p className="text-cyan-50 font-bold text-2xl font-sans mt-10 mr-20">
+          High Score: {highScore}
+        </p>
+        <p className="text-cyan-50 font-bold text-2xl font-sans mr-20">
+          Current Score: {currentScore}
+        </p>
+      </div>
       <div className="bg-gray-800 cards-container flex justify-center items-center h-screen">
-        <div className="leftCard">
+        <div className="leftCard mb-20">
           <Image
             src={images[0].imageUrl}
             alt={images[0].name}
@@ -143,7 +154,7 @@ const ImageFetcher = () => {
             Salt Score: {images[0].saltLevel}
           </p>
         </div>
-        <div className="vs-logo">
+        <div className="vs-logo mb-32">
           <Image
             src={"/vs.png"}
             alt="Versus Image"
@@ -151,7 +162,7 @@ const ImageFetcher = () => {
             height={200}
           ></Image>
         </div>
-        <div className="rightCard flex mb-6 ">
+        <div className="rightCard mb-28 ">
           <Image
             src={images[1].imageUrl}
             alt={images[1].name}

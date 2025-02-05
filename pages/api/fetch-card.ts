@@ -31,8 +31,15 @@ export default async function handler(req : NextApiRequest, res: NextApiResponse
                     imageUrl: card.image_uris.border_crop,
                     cardSalt: data[randomKey]
                 });
-    
-            }else{
+            }else if(card.image_uris.png){
+                cache[randomKey] = `https://api.scryfall.com/cards/named?exact=${randomKey}`;
+                res.status(200).json({
+                    name: randomKey,
+                    imageUrl: card.image_uris.png,
+                    cardSalt: data[randomKey]
+                });
+            }
+            else{
                 res.status(404).json({message: "Card not found"})
             }
         }catch(error){
